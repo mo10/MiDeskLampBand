@@ -10,7 +10,6 @@
     <RootNamespace>MiDeskLampBand</RootNamespace>
     <AssemblyName>MiDeskLampBand</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <targetplatformversion>8.0</targetplatformversion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -43,6 +42,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -50,15 +52,19 @@
     <Reference Include="System.Runtime" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Windows.Data" />
-    <Reference Include="Windows.UI" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BandControl.cs">
+    <Compile Include="Controls\DeskBandControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BandControl.Designer.cs">
-      <DependentUpon>BandControl.cs</DependentUpon>
+    <Compile Include="Controls\DeskBandControl.Designer.cs">
+      <DependentUpon>DeskBandControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TaskButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TaskButton.Designer.cs">
+      <DependentUpon>TaskButton.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigForm.cs">
       <SubType>Form</SubType>
@@ -66,21 +72,31 @@
     <Compile Include="ConfigForm.Designer.cs">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Deskband.cs" />
+    <Compile Include="DeskBandEntry.cs" />
     <Compile Include="CSDeskBand.cs" />
-    <Compile Include="DeskLamp.cs" />
+    <Compile Include="Lamp.cs" />
+    <Compile Include="LampDiscovery.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegCode.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="UDPSocket.cs" />
+    <Compile Include="TaskPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TaskPopupForm.Designer.cs">
+      <DependentUpon>TaskPopupForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BandControl.resx">
-      <DependentUpon>BandControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\DeskBandControl.resx">
+      <DependentUpon>DeskBandControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TaskButton.resx">
+      <DependentUpon>TaskButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
@@ -89,13 +105,31 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="TaskPopupForm.resx">
+      <DependentUpon>TaskPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="XiaoMiDeskLamp.snk" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Lightbulb_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LightSwitch_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Brightness_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Disconnect_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ConnectPlugged_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

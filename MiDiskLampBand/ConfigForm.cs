@@ -1,108 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-using Windows.UI.Notifications;
-
 namespace MiDeskLampBand
 {
     public partial class ConfigForm : Form
     {
-        IPAddress mCastAddr = IPAddress.Parse("239.255.255.250");
-        int CastPort = 1982;
-
-        UdpClient udpSocket;
-        IPEndPoint mCastEP;
-
-        List<DeskLamp> lamps = new List<DeskLamp>();
+        List<Lamp> lamps = new List<Lamp>();
+        RegCode regCode = new RegCode();
+        LampDiscovery lampDiscovery = new LampDiscovery();
+        
         public ConfigForm()
         {
             InitializeComponent();
-
-            // UDP Start
-            udpSocket = new UdpClient(0);
-            //将广播地址添加到多路广播组，生存期(路由器跳数)为10
-            udpSocket.JoinMulticastGroup(mCastAddr);
-            mCastEP = new IPEndPoint(mCastAddr, CastPort);
-            //接收信息
-            Task.Run(() => UdpReceive());
+        }
+        int counst = 0;
+        private void OnDiscoveryLamp(object sender, EventArgs e)
+        {
+            LampDiscoveryEventArgs lampDiscoveryEvent = (LampDiscoveryEventArgs)e;
+            counst++;
+        }
+        /// <summary>
+        /// 检查组件是否安装
+        /// </summary>
+        /// <returns></returns>
+        private void Check_Registered()
+        {
+            bool isInstalled = regCode.IsRegistered(typeof(DeskBandEntry).GUID.ToString());
+            if (isInstalled)
+            {
+                this.isInstall.ForeColor = Color.Green;
+                this.isInstall.Text = "已注册";
+            }
+            else
+            {
+                this.isInstall.ForeColor = Color.Red;
+                this.isInstall.Text = "未注册";
+            }
         }
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private async Task UdpReceive()
-        {
-            while (true)
-            {
-                try
-                {
-                    var receivedResult = await udpSocket.ReceiveAsync();
-                    string recvData = Encoding.ASCII.GetString(receivedResult.Buffer);
-                    //解析返回数据
-                    Dictionary<string, string> headers = new Dictionary<string, string>();
-                    foreach(string line in recvData.Split(new string[] { "\r\n" }, StringSplitOptions.None))
-                    {
-                        if(line.IndexOf(':') != -1)
-                        {
-                            string key = line.Substring(0, line.IndexOf(": "));
-                            string value = line.Substring(line.IndexOf(": ")+2);
-                            headers.Add(key, value);
-                        }
-                    }
-                    //设备地址
-
-                    DeskLamp lamp = new DeskLamp(headers);
-                    if(lamps.Count == 0 || !lamps.Exists(l => l.Id.Equals(lamp.Id)))
-                    {
-                        lamps.Add(lamp);
-                    }
-                    MessageBox.Show("sss");
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    return;
-                }
-            }
-        }
-        private void LampDiscovery()
-        {
-            string payload = "M-SEARCH * HTTP/1.1\r\n" +
-                "HOST: 239.255.255.250:1982\r\n" +
-                "MAN: \"ssdp:discover\"\r\n" +
-                "ST: wifi_bulb";
-
-            byte[] bytes = Encoding.ASCII.GetBytes(payload);
-            int a = udpSocket.Send(bytes, bytes.Length, mCastEP);
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            LampDiscovery();
-
-            string Toast = "<toast><visual><binding template=\"ToastImageAndText01\"><text id = \"1\" >";
-            Toast += "Default Text String";
-            Toast += "</text></binding></visual></toast>";
-            Windows.Data.Xml.Dom.XmlDocument tileXml = new Windows.Data.Xml.Dom.XmlDocument();
-            tileXml.LoadXml(Toast);
-            var toast = new ToastNotification(tileXml);
-            ToastNotificationManager.CreateToastNotifier("NotificationTest.xxx").Show(toast);
+            lampDiscovery.OnDiscoveryLamp += OnDiscoveryLamp;
+            lampDiscovery.Start();
+            Check_Registered();
         }
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            udpSocket.Close();
+            lampDiscovery.OnDiscoveryLamp -= OnDiscoveryLamp;
+            lampDiscovery.Stop();
+        }
+
+        private void RegistBtn_Click(object sender, EventArgs e)
+        {
+            string fullPath = System.Reflection.Assembly.GetAssembly(typeof(Program)).Location;
+            int ExitCode = regCode.RegistAssembly(fullPath);
+            if (ExitCode == -1)
+            {
+                MessageBox.Show("权限提升失败");
+            }
+            else if (ExitCode == -2)
+            {
+                MessageBox.Show("发生了未知错误");
+            }
+            else if (ExitCode == -3)
+            {
+                MessageBox.Show("操作失败");
+            }
+            Check_Registered();
+        }
+
+        private void unregistBtn_Click(object sender, EventArgs e)
+        {
+            string fullPath = System.Reflection.Assembly.GetAssembly(typeof(Program)).Location;
+            int ExitCode = regCode.UnRegistAssembly(fullPath);
+            if (ExitCode == 0)
+            {
+                Process.GetCurrentProcess().Kill();
+            }
+            if (ExitCode == -1)
+            {
+                MessageBox.Show("权限提升失败!");
+            }
+            else if (ExitCode == -2)
+            {
+                MessageBox.Show("发生了未知错误");
+            }
+            else if (ExitCode == -3)
+            {
+                MessageBox.Show("操作失败");
+            }
+            Check_Registered();
+        }
+
+        private void activeBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

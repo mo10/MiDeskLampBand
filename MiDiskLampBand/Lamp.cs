@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiDeskLampBand
 {
-    public class DeskLamp
+    public class Lamp
     {
         /// <summary>
         /// 设备IP
@@ -37,7 +37,7 @@ namespace MiDeskLampBand
         int _ColorTemp;
 
         
-        public DeskLamp(Dictionary<string, string> headers)
+        public Lamp(Dictionary<string, string> headers)
         {
             this.Address = headers["Location"].Remove(0, "yeelight://".Length).Split(new char[] { ':' })[0];
             this.Port = int.Parse(headers["Location"].Remove(0, "yeelight://".Length).Split(new char[] { ':' })[1]);
@@ -50,11 +50,6 @@ namespace MiDeskLampBand
         public void SetPowerOn(bool status)
         {
             this._IsPowerOn = status;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return ((DeskLamp)obj).Id == this.Id;
         }
     }
 }

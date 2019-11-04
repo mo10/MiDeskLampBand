@@ -2550,6 +2550,7 @@ namespace CSDeskBand.ContextMenu
     /// </summary>
     public abstract class DeskBandMenuItem
     {
+        internal object tag { get; set; } = null;
         /// <summary>
         /// Add this item to a menu.
         /// </summary>

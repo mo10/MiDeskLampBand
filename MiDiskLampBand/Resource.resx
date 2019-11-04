@@ -118,7 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Lightbulb_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Brightness_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Brightness_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LightbulbOn_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Lightbulb_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LightSwitchOff_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\LightSwitch_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ConnectPlugged_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ConnectPlugged_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Disconnect_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Disconnect_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -63,9 +63,49 @@ namespace MiDeskLampBand {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap Lightbulb_16x {
+        internal static System.Drawing.Bitmap Brightness_16x {
             get {
-                object obj = ResourceManager.GetObject("Lightbulb_16x", resourceCulture);
+                object obj = ResourceManager.GetObject("Brightness_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap ConnectPlugged_16x {
+            get {
+                object obj = ResourceManager.GetObject("ConnectPlugged_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Disconnect_16x {
+            get {
+                object obj = ResourceManager.GetObject("Disconnect_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap LightbulbOn_16x {
+            get {
+                object obj = ResourceManager.GetObject("LightbulbOn_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap LightSwitchOff_16x {
+            get {
+                object obj = ResourceManager.GetObject("LightSwitchOff_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
