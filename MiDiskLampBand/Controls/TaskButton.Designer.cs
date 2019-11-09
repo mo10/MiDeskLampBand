@@ -43,9 +43,7 @@
             this.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.Size = new System.Drawing.Size(40, 60);
             this.ResumeLayout(false);
-
         }
-
         #endregion
     }
 }

@@ -43,10 +43,12 @@
             this.taskButton2.Margin = new System.Windows.Forms.Padding(0);
             this.taskButton2.Name = "taskButton2";
             this.taskButton2.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.taskButton2.ProgressValue = 50;
             this.taskButton2.Size = new System.Drawing.Size(40, 68);
             this.taskButton2.StatusBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.taskButton2.TabIndex = 1;
             this.taskButton2.Click += new System.EventHandler(this.taskButton2_Click);
+            this.taskButton2.DoubleClick += new System.EventHandler(this.taskButton2_DoubleClick);
             // 
             // taskButton1
             // 
@@ -59,6 +61,7 @@
             this.taskButton1.Margin = new System.Windows.Forms.Padding(0);
             this.taskButton1.Name = "taskButton1";
             this.taskButton1.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.taskButton1.ProgressValue = 0;
             this.taskButton1.Size = new System.Drawing.Size(40, 68);
             this.taskButton1.StatusBarColor = System.Drawing.Color.Red;
             this.taskButton1.TabIndex = 0;

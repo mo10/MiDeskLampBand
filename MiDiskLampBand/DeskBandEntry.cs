@@ -16,6 +16,7 @@ namespace MiDeskLampBand
         protected override Control Control => _control;
         private static Control _control;
         
+        // Menu
         private DeskBandMenuAction _openConfigForm = new DeskBandMenuAction("打开设置");
         private DeskBandMenu _deviceListMenu = new DeskBandMenu("可用设备");
         private DeskBandMenuAction searching = new DeskBandMenuAction("正在搜索设备...");
@@ -34,6 +35,9 @@ namespace MiDeskLampBand
         LampDiscovery lampDiscovery = new LampDiscovery();
         Form configForm = new ConfigForm();
         public int TaskBarHeight = 0;
+
+        public Lamp activeLamp { get { return (Lamp)activeMenuItem.tag; } }
+        DeskBandMenuAction activeMenuItem;
         public DeskBandEntry()
         {
             // 显示设置窗体
@@ -107,6 +111,7 @@ namespace MiDeskLampBand
             }
             DeskBandMenuAction subMenuItem = new DeskBandMenuAction(lamp.Address);
             subMenuItem.tag = lamp;
+            subMenuItem.Clicked += OnLampMenuItem_Clicked;
             _deviceListMenu.Items.Add(subMenuItem);
         }
         /// <summary>
@@ -116,14 +121,26 @@ namespace MiDeskLampBand
         /// <param name="args"></param>
         private void OnLampMenuItem_Clicked(object sender,EventArgs args)
         {
+            DeskBandMenuAction subMenuItem = (DeskBandMenuAction)sender;
+            if(activeMenuItem == null)
+            {
+                activeMenuItem = subMenuItem;
+            }
+            if( subMenuItem != activeMenuItem)
+            {
+                activeMenuItem.Checked = false;
+                activeMenuItem = subMenuItem;
+            }
 
-        }
-        /// <summary>
-        /// 触发开关
-        /// </summary>
-        public void TogglePower()
-        {
-
+            if (activeMenuItem.Checked)
+            {
+                activeMenuItem.Checked = false;
+            }
+            else
+            {
+                activeMenuItem.Checked = true;
+                activeLamp.Open();
+            }
         }
     }
 }

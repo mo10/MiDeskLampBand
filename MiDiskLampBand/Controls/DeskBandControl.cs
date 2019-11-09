@@ -12,41 +12,38 @@ namespace MiDeskLampBand.Controls
 {
     public partial class DeskBandControl : UserControl
     {
-        DeskBandEntry deskBandEntry;
+        DeskBandEntry entity;
 
         TaskPopupForm form = new TaskPopupForm();
         public DeskBandControl(DeskBandEntry deskBandEntry)
         {
             InitializeComponent();
-            this.deskBandEntry = deskBandEntry;
+            this.entity = deskBandEntry;
         }
 
         private void taskButton1_Click(object sender, EventArgs e)
         {
-            TaskButton button = (TaskButton)sender;
-            if (form == null || form.IsDisposed)
-            {
-                form = new TaskPopupForm();
-            }
-            Point pos = button.Parent.PointToScreen(button.Location);
-            form.Location = new Point(pos.X, pos.Y - form.Height);
-            form.Show();
-
-            form.Width = button.Width;
-
+            this.entity.activeLamp.SetPower(true);
         }
 
         private void taskButton2_Click(object sender, EventArgs e)
         {
             TaskButton button = (TaskButton)sender;
-            if(button.ProgressValue >= 100)
-            {
-                button.ProgressValue = 0;
-            }
-            else
-            {
-                button.ProgressValue += 10;
-            }
+            MouseEventArgs em = (MouseEventArgs)e;
+            if (em.Button == MouseButtons.Left)
+                if (button.ProgressValue >= 100)
+                {
+                    button.ProgressValue = 0;
+                }
+                else
+                {
+                    button.ProgressValue += 10;
+                }
+        }
+
+        private void taskButton2_DoubleClick(object sender, EventArgs e)
+        {
+            taskButton2_Click(sender, e);
         }
     }
 }

@@ -75,6 +75,7 @@
     <Compile Include="DeskBandEntry.cs" />
     <Compile Include="CSDeskBand.cs" />
     <Compile Include="Lamp.cs" />
+    <Compile Include="LampConnector.cs" />
     <Compile Include="LampDiscovery.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

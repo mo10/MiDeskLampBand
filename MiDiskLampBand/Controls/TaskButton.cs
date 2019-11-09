@@ -69,6 +69,11 @@ namespace MiDeskLampBand.Controls
             this.MouseEnter += TaskBarButton_MouseEnter;
             this.MouseLeave += TaskBarButton_MouseLeave;
             this.EnabledChanged += TaskButton_EnabledChanged;
+
+            this.Click += TaskButton_Click;
+            this.DoubleClick += TaskButton_Click;
+            this.MouseClick += TaskButton_Click;
+            this.MouseDoubleClick += TaskButton_Click;
         }
 
         private void TaskBarButton_Paint(object sender, PaintEventArgs e)
@@ -94,25 +99,24 @@ namespace MiDeskLampBand.Controls
             {
                 backgroundColor = Color.FromArgb(0, Color.Black);
             }
-            Bitmap bitmap = new Bitmap(Width,Height);
-            Graphics graphics = Graphics.FromImage(bitmap);
-
-            graphics.CompositingMode = CompositingMode.SourceOver;
-            e.Graphics.CompositingQuality = CompositingQuality.GammaCorrected;
             //绘制事件遮罩
             e.Graphics.FillRectangle(new SolidBrush(backgroundColor), 0, 0, this.Width, this.Height);
-            //绘制背景遮罩
+
+            e.Graphics.CompositingQuality = CompositingQuality.GammaCorrected;
+            //绘制进度遮罩
             Color color = Color.FromArgb(20, Color.LightGray);
-            int perY = this.Height - this.Height * (_ProgressValue / 100);
-            e.Graphics.FillRectangle(new SolidBrush(color), 0, perY, this.Width, this.Height);
+            int perHeight = (int)(this.Height * (_ProgressValue / 100.0f));
+            e.Graphics.FillRectangle(new SolidBrush(color), 0, this.Height - perHeight, this.Width, perHeight);
             //绘制状态条
             e.Graphics.FillRectangle(new SolidBrush(_StatusBarColor), 2, this.Height-2, this.Width-4, 2);
-            e.Graphics.DrawImage(bitmap, 0, 0);
         }
 
         private void TaskBarButton_MouseDown(object sender, MouseEventArgs e)
         {
-            displayStyle = DisplayStyle.MouseDown;
+            if (e.Button == MouseButtons.Left)
+                displayStyle = DisplayStyle.MouseDown;
+            else
+                displayStyle = DisplayStyle.Normal;
             this.Refresh();
         }
 
@@ -130,7 +134,10 @@ namespace MiDeskLampBand.Controls
 
         private void TaskBarButton_MouseUp(object sender, MouseEventArgs e)
         {
-            displayStyle = DisplayStyle.MouseUp;
+            if (e.Button == MouseButtons.Left)
+                displayStyle = DisplayStyle.MouseUp;
+            else
+                displayStyle = DisplayStyle.Normal;
             this.Refresh();
         }
 
@@ -138,5 +145,11 @@ namespace MiDeskLampBand.Controls
         {
             this.Refresh();
         }
+
+        private void TaskButton_Click(object sender, EventArgs e)
+        {
+            this.Refresh();
+        }
+
     }
 }
