@@ -39,7 +39,7 @@
             this.taskButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.taskButton2.Dock = System.Windows.Forms.DockStyle.Right;
             this.taskButton2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.taskButton2.Location = new System.Drawing.Point(198, 0);
+            this.taskButton2.Location = new System.Drawing.Point(25, 0);
             this.taskButton2.Margin = new System.Windows.Forms.Padding(0);
             this.taskButton2.Name = "taskButton2";
             this.taskButton2.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
@@ -57,7 +57,7 @@
             this.taskButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.taskButton1.Dock = System.Windows.Forms.DockStyle.Right;
             this.taskButton1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.taskButton1.Location = new System.Drawing.Point(238, 0);
+            this.taskButton1.Location = new System.Drawing.Point(65, 0);
             this.taskButton1.Margin = new System.Windows.Forms.Padding(0);
             this.taskButton1.Name = "taskButton1";
             this.taskButton1.Padding = new System.Windows.Forms.Padding(1, 0, 1, 0);
@@ -75,7 +75,7 @@
             this.Controls.Add(this.taskButton2);
             this.Controls.Add(this.taskButton1);
             this.Name = "DeskBandControl";
-            this.Size = new System.Drawing.Size(278, 68);
+            this.Size = new System.Drawing.Size(105, 68);
             this.ResumeLayout(false);
 
         }

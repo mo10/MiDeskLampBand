@@ -33,11 +33,12 @@
             this.isInstall = new System.Windows.Forms.Label();
             this.unregistBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // registBtn
             // 
-            this.registBtn.Location = new System.Drawing.Point(149, 8);
+            this.registBtn.Location = new System.Drawing.Point(166, 8);
             this.registBtn.Name = "registBtn";
             this.registBtn.Size = new System.Drawing.Size(75, 23);
             this.registBtn.TabIndex = 0;
@@ -66,7 +67,7 @@
             // 
             // unregistBtn
             // 
-            this.unregistBtn.Location = new System.Drawing.Point(230, 8);
+            this.unregistBtn.Location = new System.Drawing.Point(247, 8);
             this.unregistBtn.Name = "unregistBtn";
             this.unregistBtn.Size = new System.Drawing.Size(75, 23);
             this.unregistBtn.TabIndex = 3;
@@ -76,19 +77,30 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(149, 38);
+            this.button1.Location = new System.Drawing.Point(166, 37);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(157, 23);
+            this.button1.Size = new System.Drawing.Size(156, 23);
             this.button1.TabIndex = 5;
             this.button1.Text = "重新启动 Explorer";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(85, 37);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 69);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.unregistBtn);
             this.Controls.Add(this.isInstall);
@@ -115,5 +127,6 @@
         private System.Windows.Forms.Label isInstall;
         private System.Windows.Forms.Button unregistBtn;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

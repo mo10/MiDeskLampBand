@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using TinyJSON;
+
 namespace MiDeskLampBand
 {
     public partial class ConfigForm : Form
     {
-        List<Lamp> lamps = new List<Lamp>();
+        Lamp lamp;
         RegCode regCode = new RegCode();
         LampDiscovery lampDiscovery = new LampDiscovery();
         
@@ -15,11 +17,13 @@ namespace MiDeskLampBand
         {
             InitializeComponent();
         }
-        int counst = 0;
+
         private void OnDiscoveryLamp(object sender, EventArgs e)
         {
             LampDiscoveryEventArgs lampDiscoveryEvent = (LampDiscoveryEventArgs)e;
-            counst++;
+            lamp = lampDiscoveryEvent.lamp;
+            lampDiscovery.Stop();
+            MessageBox.Show("OK");
         }
         /// <summary>
         /// 检查组件是否安装
@@ -44,6 +48,7 @@ namespace MiDeskLampBand
             lampDiscovery.OnDiscoveryLamp += OnDiscoveryLamp;
             lampDiscovery.Start();
             Check_Registered();
+
         }
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -102,6 +107,12 @@ namespace MiDeskLampBand
         private void button1_Click(object sender, EventArgs e)
         {
             Process.GetCurrentProcess().Kill();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            lamp.Open();
+            lamp.SetPower(!lamp.Power);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TinyJSON;
 
 namespace MiDeskLampBand
 {
@@ -22,6 +23,10 @@ namespace MiDeskLampBand
         /// 设备ID
         /// </summary>
         public string Id { get; }
+        /// <summary>
+        /// 设备支持的方法
+        /// </summary>
+        public List<string> Support { get; }
         /// <summary>
         /// 设备是否开启
         /// </summary>
@@ -47,40 +52,49 @@ namespace MiDeskLampBand
         /// <summary>
         /// 是否已连接
         /// </summary>
-        public bool isConnected { get { return _isConnected; } }
-        bool _isConnected;
+        public bool isConnected
+        {
+            get
+            {
+                if (client != null)
+                    return client.Connected;
+                else
+                    return false;
+            }
+        }
 
         TcpClient client;
         NetworkStream stream;
         int commandId = 1;
+
         public event EventHandler OnDisconnected;
+        public event EventHandler OnStatusChanged;
 
         public Lamp(Dictionary<string, string> headers)
         {
-            this.Address = headers["Location"].Remove(0, "yeelight://".Length).Split(new char[] { ':' })[0];
-            this.Port = int.Parse(headers["Location"].Remove(0, "yeelight://".Length).Split(new char[] { ':' })[1]);
-
-            this.Id = headers["id"];
-            this._Power = (headers["power"] == "on" ? true : false);
-            this._Bright = int.Parse(headers["bright"]);
-            this._ColorTemp = int.Parse(headers["ct"]);
-            this._isConnected = false;
+            this.Address        = headers["Location"].Remove(0, "yeelight://".Length).Split(new char[] { ':' })[0];
+            this.Port           = int.Parse(headers["Location"].Remove(0, "yeelight://".Length).Split(new char[] { ':' })[1]);
+            this.Support        = new List<string>(headers["support"].Split(new char[] { ' ' }));
+            this.Id             = headers["id"];
+            this._Power         = (headers["power"] == "on" ? true : false);
+            this._Bright        = int.Parse(headers["bright"]);
+            this._ColorTemp     = int.Parse(headers["ct"]);
         }
         /// <summary>
-        /// 与灯建立连接
+        /// 与设备建立连接
         /// </summary>
-        /// <param name="lamp"></param>
         public void Open()
         {
             try
             {
+                // 关闭上一个连接
                 if (client != null && client.Connected)
                 {
                     CleanUp();
                 }
                 client = new TcpClient(this.Address, this.Port);
                 stream = client.GetStream();
-                this._isConnected = client.Connected;
+                stream.ReadTimeout = 1000;
             }
             catch (Exception ex)
             {
@@ -93,22 +107,48 @@ namespace MiDeskLampBand
                 stream.Close();
             if(client != null || client.Connected)
                 client.Close();
-            this._isConnected = false;
 
             LampConnectorEventArgs eventArgs = new LampConnectorEventArgs(this, "disconnected");
             OnDisconnected?.Invoke(this, eventArgs);
         }
         public void SetPower(bool status)
         {
-            this._Power = status;
-            string payloadFormat = "{{\"id\":{0},\"method\":\"{1}\",\"params\":[{2}]}}\r\n";
-            string payloadFormat2 = "{\"id\":1,\"method\":\"set_power\",\"params\":[\"on\", \"smooth\", 500]}\r\n";
-            string pld = String.Format(payloadFormat, this.commandId++, "toggle", "");
 
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes(payloadFormat2);
-            MessageBox.Show(String.Format("{0},{1}", pld, (client.Connected ? "y" : "n")));
+            YeelightControl control = new YeelightControl();
+            control.id = commandId++;
+            control.method = "set_power";
+            control.@params.Add(status ? "on" : "off");
+            control.@params.Add("smooth");
+            control.@params.Add(2000);
+
+            SendControl(control);
+
+            this._Power = status;
+        }
+        private YeelightResult SendControl(YeelightControl control)
+        {
+            var jsonText = JSON.Dump(control, EncodeOptions.NoTypeHints) + "\r\n";
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(jsonText);
             stream.Write(data, 0, data.Length);
             stream.Flush();
+
+            byte[] recvData = new byte[1024];
+            StringBuilder myCompleteMessage = new StringBuilder();
+            int numberOfBytesRead = 0;
+            
+            do
+            {
+                
+                numberOfBytesRead = stream.Read(recvData, 0, recvData.Length);
+
+                myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(recvData, 0, numberOfBytesRead));
+
+            }
+            while (stream.DataAvailable);
+
+            // Print out the received message to the console.
+            MessageBox.Show(myCompleteMessage.ToString());
+            return new YeelightResult();
         }
     }
 }
